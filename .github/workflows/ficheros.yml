@@ -2,7 +2,7 @@ name: "Checks existence of basic files and spell checks markdown files"
 on: [pull_request, push]
 
 jobs:
-  file_presence:
+  file_presence_and_spellcheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
