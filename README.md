@@ -1,7 +1,5 @@
-# Plantilla del curso de desarrollo ágil 
+# NOVA-IMS MLOps course template
 
-Plantilla para el [curso de desarrollo ágil](https://jj.github.io/curso-tdd)
+Template for projects in the [NOVA-IMS MLOps course](https://jj.github.io/curso-tdd)
 
-Contiene el mínimo para un proyecto, incluyendo una GitHub action que
-comprueba la presencia de ciertos ficheros, un directorio para los
-tests, y otro para la documentación.
+It includes minimal workflows for projects.

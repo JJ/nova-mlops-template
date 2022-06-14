@@ -1,12 +1,28 @@
-name: "Comprobación de presencia de ficheros básicos"
+name: "Checks existence of basic files and spell checks markdown files"
 on: [pull_request, push]
 
 jobs:
   file_presence:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: "Comprueba ficheros"
         uses: JJ/files-present-action@releases/v1
         with:
-          files: "LICENSE, README.md, .gitignore, .travis.yml"
+          files: "LICENSE, README.md, .gitignore"
+            - name: Prerrequisites
+        run: |
+          sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y libtext-hunspell-perl
+      - name: Usa install-with-cpm
+        uses: perl-actions/install-with-cpm@stable
+        with:
+          install: |
+            Test::Text
+            TAP::Harness
+          sudo: true
+      - name: Spell check
+        run: |
+          curl https://raw.githubusercontent.com/JJ/Test-Text/master/data/en_US.aff -o English.aff
+          curl https://raw.githubusercontent.com/JJ/Test-Text/master/data/en_US.dic -o English.dic
+          echo "use Test::Text; just_check( '.','.', 'English',0 ); just_check( docs','.', 'English' );  " > just_check.t
+          perl -MTAP::Harness -e 'use utf8; my $harness = TAP::Harness->new( { verbosity => 0} ); die "FAIL" if $harness->runtests( "just_check.t" )->failed;'
